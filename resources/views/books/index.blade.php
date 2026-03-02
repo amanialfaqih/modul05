@@ -7,18 +7,12 @@
     <a href="{{ route('books.create') }}" class="btn btn-primary">+ Tambah</a>
 </div>
 
-@if(session('success'))
-<div class="alert alert-success">
-    {{ session('success') }}
-</div>
-@endif
-
 <form method="GET" action="{{ route('books.index') }}" class="row mb-3">
     <div class="col-md-4">
         <input type="text" name="search"
-               value="{{ request('search') }}"
                class="form-control"
-               placeholder="Cari Judul...">
+               placeholder="Cari Judul..."
+               value="{{ request('search') }}">
     </div>
 
     <div class="col-md-4">
@@ -34,24 +28,23 @@
     </div>
 
     <div class="col-md-4">
-        <button class="btn btn-primary">Filter</button>
+        <button class="btn btn-info text-white">Filter</button>
         <a href="{{ route('books.index') }}" class="btn btn-secondary">Reset</a>
     </div>
 </form>
 
-<h5>Total Semua Book:
-    <span class="badge bg-success">{{ $totalBooks }}</span>
-</h5>
-
-<h6>Total Per Category:</h6>
-@foreach($totalPerCategory as $data)
-    <span class="badge bg-info">
-        {{ $data->nama_kategori }}
-        ({{ $data->books_count }})
+<div class="mb-3">
+    <strong>Total Semua Book:</strong>
+    <span class="badge bg-success">
+        {{ $totalBooks }}
     </span>
-@endforeach
+</div>
 
-<br><br>
+@if(session('success'))
+<div class="alert alert-success">
+    {{ session('success') }}
+</div>
+@endif
 
 <table class="table table-bordered">
     <thead class="table-dark">
@@ -66,16 +59,17 @@
         </tr>
     </thead>
     <tbody>
-        @foreach($books as $key => $book)
+        @forelse($books as $key => $book)
         <tr>
             <td>{{ $books->firstItem() + $key }}</td>
-            <td>{{ $book->category->nama_kategori }}</td>
+            <td>{{ $book->category->nama_kategori ?? '-' }}</td>
             <td>{{ $book->judul }}</td>
             <td>{{ $book->penulis }}</td>
             <td>{{ $book->tahun_terbit }}</td>
             <td>{{ $book->stok }}</td>
             <td>
-                <a href="{{ route('books.edit',$book->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                <a href="{{ route('books.edit',$book->id) }}"
+                   class="btn btn-warning btn-sm">Edit</a>
 
                 <form action="{{ route('books.destroy',$book->id) }}"
                       method="POST" class="d-inline">
@@ -88,7 +82,13 @@
                 </form>
             </td>
         </tr>
-        @endforeach
+        @empty
+        <tr>
+            <td colspan="7" class="text-center">
+                Data tidak ditemukan
+            </td>
+        </tr>
+        @endforelse
     </tbody>
 </table>
 

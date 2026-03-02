@@ -12,25 +12,27 @@ class BookController extends Controller
     {
         $query = Book::with('category');
 
+        // Search judul
         if ($request->search) {
             $query->where('judul', 'like', '%' . $request->search . '%');
         }
 
+        // Filter kategori
         if ($request->category) {
             $query->where('category_id', $request->category);
         }
 
-        $books = $query->paginate(5);
+        $books = $query->paginate(5)->withQueryString();
         $categories = Category::all();
 
         $totalBooks = Book::count();
-        $totalPerCategory = Category::withCount('books')->get();
+        $totalCategories = Category::count();
 
         return view('books.index', compact(
             'books',
             'categories',
             'totalBooks',
-            'totalPerCategory'
+            'totalCategories'
         ));
     }
 
@@ -43,17 +45,17 @@ class BookController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'category_id' => 'required',
             'judul' => 'required',
             'penulis' => 'required',
-            'tahun_terbit' => 'required|numeric',
-            'stok' => 'required|numeric'
+            'tahun_terbit' => 'required',
+            'stok' => 'required',
+            'category_id' => 'required'
         ]);
 
         Book::create($request->all());
 
         return redirect()->route('books.index')
-                ->with('success','Data berhasil ditambahkan');
+                ->with('success','Book berhasil ditambahkan');
     }
 
     public function edit(Book $book)
@@ -65,17 +67,17 @@ class BookController extends Controller
     public function update(Request $request, Book $book)
     {
         $request->validate([
-            'category_id' => 'required',
             'judul' => 'required',
             'penulis' => 'required',
-            'tahun_terbit' => 'required|numeric',
-            'stok' => 'required|numeric'
+            'tahun_terbit' => 'required',
+            'stok' => 'required',
+            'category_id' => 'required'
         ]);
 
         $book->update($request->all());
 
         return redirect()->route('books.index')
-                ->with('success','Data berhasil diupdate');
+                ->with('success','Book berhasil diupdate');
     }
 
     public function destroy(Book $book)
@@ -83,6 +85,6 @@ class BookController extends Controller
         $book->delete();
 
         return redirect()->route('books.index')
-                ->with('success','Data berhasil dihapus');
+                ->with('success','Book berhasil dihapus');
     }
 }
