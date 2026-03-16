@@ -3,15 +3,14 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\CategoryController;
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-*/
+use App\Models\Book;
 
 Route::get('/', function () {
-    return redirect('/books');
+
+    $books = Book::latest()->take(8)->get();
+
+    return view('frontend.home', compact('books'));
+
 });
 
 Route::resource('books', BookController::class);

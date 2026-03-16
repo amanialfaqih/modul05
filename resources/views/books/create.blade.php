@@ -2,52 +2,69 @@
 
 @section('content')
 
-<h3>Tambah Book</h3>
+<div class="container">
 
-<div class="card">
-<div class="card-body">
+<h3 class="mb-4">Tambah Book</h3>
 
-<form action="{{ route('books.store') }}" method="POST">
-    @csrf
+<form action="{{ route('books.store') }}" method="POST" enctype="multipart/form-data">
 
-    <div class="mb-3">
-        <label>Kategori</label>
-        <select name="category_id" class="form-select">
-            <option value="">-- Pilih Kategori --</option>
-            @foreach($categories as $category)
-                <option value="{{ $category->id }}">
-                    {{ $category->nama_kategori }}
-                </option>
-            @endforeach
-        </select>
-    </div>
+@csrf
 
-    <div class="mb-3">
-        <label>Judul</label>
-        <input type="text" name="judul" class="form-control">
-    </div>
+<div class="mb-3">
+<label class="form-label">Kategori</label>
+<select name="category_id" class="form-control">
+<option value="">-- Pilih Kategori --</option>
 
-    <div class="mb-3">
-        <label>Penulis</label>
-        <input type="text" name="penulis" class="form-control">
-    </div>
+@foreach($categories as $cat)
+<option value="{{ $cat->id }}">
+{{ $cat->nama_kategori }}
+</option>
+@endforeach
 
-    <div class="mb-3">
-        <label>Tahun Terbit</label>
-        <input type="number" name="tahun_terbit" class="form-control">
-    </div>
+</select>
+</div>
 
-    <div class="mb-3">
-        <label>Stok</label>
-        <input type="number" name="stok" class="form-control">
-    </div>
 
-    <button class="btn btn-success">Simpan</button>
-    <a href="{{ route('books.index') }}" class="btn btn-secondary">Kembali</a>
+<div class="mb-3">
+<label class="form-label">Judul</label>
+<input type="text" name="judul" class="form-control">
+</div>
+
+
+<div class="mb-3">
+<label class="form-label">Penulis</label>
+<input type="text" name="penulis" class="form-control">
+</div>
+
+
+<div class="mb-3">
+<label class="form-label">Tahun Terbit</label>
+<input type="number" name="tahun_terbit" class="form-control">
+</div>
+
+
+<div class="mb-3">
+<label class="form-label">Stok</label>
+<input type="number" name="stok" class="form-control">
+</div>
+
+
+<div class="mb-3">
+<label class="form-label">Cover Buku</label>
+<input type="file" name="cover" class="form-control">
+</div>
+
+
+<button type="submit" class="btn btn-success">
+Simpan
+</button>
+
+<a href="{{ route('books.index') }}" class="btn btn-secondary">
+Kembali
+</a>
 
 </form>
 
-</div>
 </div>
 
 @endsection
