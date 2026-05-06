@@ -14,16 +14,8 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        $credentials = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required'
-        ]);
-
-        if (Auth::attempt($credentials)) {
-
-            $request->session()->regenerate();
-
-            return redirect('/home');
+        if (Auth::attempt($request->only('email','password'))) {
+            return redirect()->route('home');
         }
 
         return back()->withErrors([
@@ -31,13 +23,9 @@ class AuthController extends Controller
         ]);
     }
 
-    public function logout(Request $request)
+    public function logout()
     {
         Auth::logout();
-
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-
-        return redirect('/');
+        return redirect()->route('login');
     }
 }

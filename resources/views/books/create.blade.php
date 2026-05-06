@@ -63,6 +63,11 @@ Simpan
 Kembali
 </a>
 
+<div class="mb-3">
+    <label>Harga</label>
+    <input type="number" name="harga" class="form-control" required>
+</div>
+
 </form>
 
 </div>

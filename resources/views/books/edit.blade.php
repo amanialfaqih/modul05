@@ -50,6 +50,11 @@
     <button class="btn btn-primary">Update</button>
     <a href="{{ route('books.index') }}" class="btn btn-secondary">Kembali</a>
 
+    <div class="mb-3">
+    <label>Harga</label>
+    <input type="number" name="harga" value="{{ $book->harga }}" class="form-control">
+</div>
+
 </form>
 
 </div>
